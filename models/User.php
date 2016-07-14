@@ -4,6 +4,7 @@ namespace app\models;
 
 use yii\base\NotSupportedException;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -35,6 +36,17 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username]);
+    }
+
+    public static function options()
+    {
+        return ArrayHelper::map(
+            static::find()
+                ->select(['id', 'username'])
+                ->orderBy(['username' => 'asc'])
+                ->all(),
+            'id', 'username'
+        );
     }
 
     public function rules()
