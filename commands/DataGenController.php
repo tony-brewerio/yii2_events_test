@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use app\models\NotificationTemplate;
 use app\models\User;
 use yii\console\Controller;
 
@@ -18,6 +19,52 @@ use yii\console\Controller;
  */
 class DataGenController extends Controller
 {
+
+    /**
+     * Add some basic templates, like registration or notification about new articles
+     */
+    public function actionTemplates()
+    {
+        $this->syncTemplate([
+            'event' => 'UserRegistered',
+            'target_mode' => NotificationTemplate::TARGET_MODE_EVENT_USER,
+            'notify_database' => false,
+            'notify_email' => true,
+            'title' => 'Добро пожаловать на сайт, {{ username }}',
+            'body' =>
+                'Уважаемый {{ username }}.' . PHP_EOL .
+                'Благодарим Вас за регистрацию на нашем сайте.',
+        ]);
+        $this->syncTemplate([
+            'event' => 'UserRegistered',
+            'target_mode' => NotificationTemplate::TARGET_MODE_SPECIFIC_USER,
+            'target_id' => User::findByUsername('admin')->primaryKey,
+            'notify_database' => true,
+            'notify_email' => true,
+            'title' => 'На сайте новый пользователь - {{ username }}',
+            'body' => 'На сайте зарегистрировался новый пользователь - {{ username }}.',
+        ]);
+        $this->syncTemplate([
+            'event' => 'ArticleCreated',
+            'target_mode' => NotificationTemplate::TARGET_MODE_ALL,
+            'title' => 'На сайте новая статья, {{ username }}',
+            'notify_database' => true,
+            'notify_email' => false,
+            'body' =>
+                'Уважаемый {{ username }}.' . PHP_EOL .
+                'На сайте добавлена новая статья "{{ articleTitle }}".' . PHP_EOL .
+                '{{ articleShortBody }}' . PHP_EOL .
+                '{{ articleMoreLink }}',
+        ]);
+    }
+
+    protected function syncTemplate($attrs)
+    {
+        $user = NotificationTemplate::findOne(['title' => $attrs['title']]) ?: new NotificationTemplate();
+        $user->attributes = $attrs;
+        var_dump($user->save(false));
+    }
+
     /**
      * Generate a bunch of users and a single admin
      */

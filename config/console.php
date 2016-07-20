@@ -23,6 +23,7 @@ $config = [
             ],
         ],
         'db' => $db,
+        'events' => require(__DIR__ . '/events.php'),
     ],
     'params' => $params,
     /*
