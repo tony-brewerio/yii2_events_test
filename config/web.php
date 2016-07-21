@@ -51,6 +51,7 @@ $config = [
         */
     ],
     'params' => $params,
+    'defaultRoute' => 'notification-database-targeted/index',
 ];
 
 if (YII_ENV_DEV) {

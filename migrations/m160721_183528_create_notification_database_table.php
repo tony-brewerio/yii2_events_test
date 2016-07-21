@@ -24,6 +24,8 @@ class m160721_183528_create_notification_database_table extends Migration
         ]);
         $this->addForeignKey('notification_database_sender_fk', 'notification_database', 'sender_id', 'user', 'id');
         $this->addForeignKey('notification_database_target_fk', 'notification_database', 'target_id', 'user', 'id');
+        $this->createIndex('notification_database_sender_fki', 'notification_database', 'sender_id');
+        $this->createIndex('notification_database_target_fki', 'notification_database', 'target_id');
     }
 
     /**
