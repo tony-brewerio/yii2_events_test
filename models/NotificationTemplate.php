@@ -137,7 +137,7 @@ class NotificationTemplate extends ActiveRecord
         $vars = $event->templateVars();
         return [
             'title' => $twig->render('title', $vars),
-            'body' => $twig->render('title', $vars),
+            'body' => $twig->render('body', $vars),
         ];
     }
 

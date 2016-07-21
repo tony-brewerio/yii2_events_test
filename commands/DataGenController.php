@@ -7,6 +7,8 @@
 
 namespace app\commands;
 
+use app\components\events\EventArticleCreated;
+use app\components\events\EventUserRegistered;
 use app\models\NotificationTemplate;
 use app\models\User;
 use yii\console\Controller;
@@ -26,7 +28,7 @@ class DataGenController extends Controller
     public function actionTemplates()
     {
         $this->syncTemplate([
-            'event' => 'UserRegistered',
+            'event' => EventUserRegistered::className(),
             'target_mode' => NotificationTemplate::TARGET_MODE_EVENT_USER,
             'notify_database' => false,
             'notify_email' => true,
@@ -36,7 +38,7 @@ class DataGenController extends Controller
                 'Благодарим Вас за регистрацию на нашем сайте.',
         ]);
         $this->syncTemplate([
-            'event' => 'UserRegistered',
+            'event' => EventUserRegistered::className(),
             'target_mode' => NotificationTemplate::TARGET_MODE_SPECIFIC_USER,
             'target_id' => User::findByUsername('admin')->primaryKey,
             'notify_database' => true,
@@ -45,16 +47,16 @@ class DataGenController extends Controller
             'body' => 'На сайте зарегистрировался новый пользователь - {{ username }}.',
         ]);
         $this->syncTemplate([
-            'event' => 'ArticleCreated',
+            'event' => EventArticleCreated::className(),
             'target_mode' => NotificationTemplate::TARGET_MODE_ALL,
-            'title' => 'На сайте новая статья, {{ username }}',
+            'title' => 'На сайте новая статья, {{ targetUsername }}',
             'notify_database' => true,
             'notify_email' => false,
             'body' =>
-                'Уважаемый {{ username }}.' . PHP_EOL .
-                'На сайте добавлена новая статья "{{ articleTitle }}".' . PHP_EOL .
-                '{{ articleShortBody }}' . PHP_EOL .
-                '{{ articleMoreLink }}',
+                'Уважаемый {{ targetUsername }}.' . PHP_EOL .
+                'На сайте добавлена новая статья "{{ articleTitle }}", которую разместил {{ username }}.' . PHP_EOL .
+                '{{ articleShortBody }}...' . PHP_EOL .
+                '{{ articleMoreLink | raw }}',
         ]);
     }
 

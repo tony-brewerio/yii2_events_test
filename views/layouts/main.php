@@ -39,6 +39,7 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Articles', 'url' => ['/article/index']],
             ['label' => 'Templates', 'url' => ['/notification-template/index']],
+            ['label' => 'Notifications', 'url' => ['/notification-database/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
