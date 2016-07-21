@@ -2,15 +2,10 @@
 
 namespace app\components\events;
 
-use app\models\User;
-use yii\base\Model;
-
 /**
- * @property User $user
  * @property string $username
  */
-class EventUserRegistered extends Model
+class EventUserRegistered extends EventBase
 {
-    public $user;
     public $username;
 }

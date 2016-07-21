@@ -2,7 +2,11 @@
 
 namespace app\models;
 
+use app\components\events\EventBase;
+use Twig_Environment;
+use Twig_Loader_Array;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "notification_template".
@@ -20,7 +24,7 @@ use Yii;
  * @property User $target
  * @property User $sender
  */
-class NotificationTemplate extends \yii\db\ActiveRecord
+class NotificationTemplate extends ActiveRecord
 {
     const TARGET_MODE_ALL = 'all';
     const TARGET_MODE_SPECIFIC_USER = 'specific_user';
@@ -69,6 +73,10 @@ class NotificationTemplate extends \yii\db\ActiveRecord
             [['sender_id', 'target_id'], 'integer'],
             [['target_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['target_id' => 'id']],
             [['sender_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['sender_id' => 'id']],
+            // twig
+            [['title', 'body'], 'validateTemplate', 'when' => function ($model, $attr) {
+                return !($this->hasErrors('event') || $this->hasErrors($attr));
+            }],
         ];
     }
 
@@ -105,4 +113,46 @@ class NotificationTemplate extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'sender_id']);
     }
+
+    /**
+     * @return Twig_Environment
+     */
+    public function twig()
+    {
+        return new Twig_Environment(
+            new Twig_Loader_Array(['title' => $this->title, 'body' => $this->body]), ['strict_variables' => true]
+        );
+    }
+
+    /**
+     * Render title + body using variables from the event.
+     * Uses Twig template engine since simple string replacement can only get you so far.
+     *
+     * @param EventBase $event
+     * @return array
+     */
+    public function render(EventBase $event)
+    {
+        $twig = $this->twig();
+        $vars = $event->templateVars();
+        return [
+            'title' => $twig->render('title', $vars),
+            'body' => $twig->render('title', $vars),
+        ];
+    }
+
+    /**
+     * Validate renderable property by rendering a sample event.
+     */
+    public function validateTemplate($attr, $params)
+    {
+        $event = (new \ReflectionClass($this->event))->newInstance();
+        $vars = $event->templateVars();
+        try {
+            $this->twig()->render($attr, $vars);
+        } catch (\Twig_Error $error) {
+            $this->addError($attr, 'Ошибка в коде шаблона: ' . $error->getMessage());
+        }
+    }
+
 }

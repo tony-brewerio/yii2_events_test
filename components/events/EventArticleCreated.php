@@ -2,19 +2,14 @@
 
 namespace app\components\events;
 
-use app\models\User;
-use yii\base\Event;
-
 /**
- * @property User $user
  * @property string $username
  * @property string $articleTitle
  * @property string $articleShortBody
  * @property string $articleMoreLink
  */
-class EventArticleCreated extends Event
+class EventArticleCreated extends EventBase
 {
-    public $user;
     public $username;
     public $articleTitle;
     public $articleShortBody;

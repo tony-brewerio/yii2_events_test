@@ -26,13 +26,7 @@ class Events extends Component
     {
         $eventsVariables = [];
         foreach ($this->events as $className) {
-            foreach ((new \ReflectionClass($className))->getProperties() as $property) {
-                // only properties defined on actual event class are visible to the user,
-                // and `user` is hidden since it's for internal use only
-                if ($property->getDeclaringClass()->getName() == $className && $property->getName() != 'user') {
-                    $eventsVariables[$className][] = $property->getName();
-                }
-            }
+            $eventsVariables[$className] = (new $className)->templateVarsNames();
         }
         return $eventsVariables;
     }
