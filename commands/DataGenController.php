@@ -72,9 +72,15 @@ class DataGenController extends Controller
      */
     public function actionUsers()
     {
-        $this->syncUser(['username' => 'admin', 'password' => 'admin', 'admin' => true]);
+        $this->syncUser([
+            'username' => 'admin', 'email' => "admin@example.com",
+            'password' => 'admin', 'admin' => true
+        ]);
         for ($i = 0; $i < 10; $i++) {
-            $this->syncUser(['username' => "user{$i}", 'password' => "user{$i}", 'admin' => false]);
+            $this->syncUser([
+                'username' => "user{$i}", 'email' => "user{$i}@example.com",
+                'password' => "user{$i}", 'admin' => false
+            ]);
         }
     }
 

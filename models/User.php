@@ -9,6 +9,7 @@ use yii\web\IdentityInterface;
 
 /**
  * @property integer $id
+ * @property string $email
  * @property string $username
  * @property string $password_hash
  * @property boolean admin
@@ -52,8 +53,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         $rules = [
-            ['username', 'required'],
-            ['username', 'unique'],
+            [['username', 'email'], 'required'],
+            [['username', 'email'], 'unique'],
+            ['email', 'email'],
         ];
         $rules[] = ['admin', 'boolean', 'on' => static::SCENARIO_DATAGEN];
         $rules[] = ['password', 'safe', 'on' => static::SCENARIO_DATAGEN];
