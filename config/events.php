@@ -3,7 +3,7 @@
 return [
     'class' => 'app\components\Events',
     'events' => [
-        'ArticleCreated',
-        'UserRegistered',
+        'app\components\events\EventArticleCreated',
+        'app\components\events\EventUserRegistered',
     ],
 ];

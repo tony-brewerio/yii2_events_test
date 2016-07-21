@@ -36,8 +36,11 @@ class NotificationTemplate extends \yii\db\ActiveRecord
 
     public function eventsOptions()
     {
-        $options = Yii::$app->events->events;
-        return array_combine($options, $options);
+        $options = [];
+        foreach (Yii::$app->events->events as $className) {
+            $options[$className] = (new \ReflectionClass($className))->getShortName();
+        }
+        return $options;
     }
 
     public function targetModeOptions()

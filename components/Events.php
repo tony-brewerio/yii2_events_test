@@ -22,11 +22,24 @@ class Events extends Component
         }
     }
 
+    public function eventsVariables()
+    {
+        $eventsVariables = [];
+        foreach ($this->events as $className) {
+            foreach ((new \ReflectionClass($className))->getProperties() as $property) {
+                // only properties defined on actual event class are visible to the user,
+                // and `user` is hidden since it's for internal use only
+                if ($property->getDeclaringClass()->getName() == $className && $property->getName() != 'user') {
+                    $eventsVariables[$className][] = $property->getName();
+                }
+            }
+        }
+        return $eventsVariables;
+    }
+
     public function fire(Event $event)
     {
-        $name = explode('\\', $event::className());
-        $name = preg_replace('/^Event/', '', $name[count($name) - 1]);
-        $this->trigger($name);
+        $this->trigger($event::className());
     }
 
     public function onEvent($event)

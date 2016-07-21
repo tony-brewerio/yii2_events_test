@@ -35,4 +35,6 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 
+    <?php $this->registerJs('setupNotificationTemplateFormEventVariablesHints(' . json_encode(Yii::$app->events->eventsVariables(), JSON_UNESCAPED_UNICODE) . ')'); ?>
+
 </div>
