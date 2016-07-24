@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\assets\AppAsset;
+use app\components\Access;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
@@ -36,15 +37,15 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'My Notifications', 'url' => ['/notification-database-targeted/index']],
-            ['label' => 'Users', 'url' => ['/user/index']],
-            ['label' => 'Articles', 'url' => ['/article/index']],
-            ['label' => 'Templates', 'url' => ['/notification-template/index']],
-            ['label' => 'Notifications', 'url' => ['/notification-database/index']],
+            ['label' => 'My Notifications', 'url' => ['/notification-database-targeted/index'], 'visible' => Access::isAuthenticated()],
+            ['label' => 'Users', 'url' => ['/user/index'], 'visible' => Access::isAdmin()],
+            ['label' => 'Articles', 'url' => ['/article/index'], 'visible' => Access::isAdmin()],
+            ['label' => 'Templates', 'url' => ['/notification-template/index'], 'visible' => Access::isAdmin()],
+            ['label' => 'Notifications', 'url' => ['/notification-database/index'], 'visible' => Access::isAdmin()],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+            ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post', ['class' => 'navbar-form'])

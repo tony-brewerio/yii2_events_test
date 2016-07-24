@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Access;
 use app\models\NotificationTemplate;
 use app\models\NotificationTemplateSearch;
 use Yii;
@@ -26,6 +27,7 @@ class NotificationTemplateController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => Access::onlyAdmins(),
         ];
     }
 

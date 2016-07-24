@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Access;
 use app\models\NotificationDatabase;
 use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
@@ -20,6 +21,7 @@ class NotificationDatabaseTargetedController extends Controller
                     'mark-as-viewed' => ['post'],
                 ],
             ],
+            'access' => Access::onlyAdmins(),
         ];
     }
 

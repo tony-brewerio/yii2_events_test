@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Access;
 use Yii;
 use app\models\NotificationDatabase;
 use app\models\NotificationDatabaseSearch;
@@ -26,6 +27,7 @@ class NotificationDatabaseController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => Access::onlyAdmins(),
         ];
     }
 

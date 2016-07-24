@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
+use app\components\Access;
 use app\models\Article;
 use app\models\ArticleSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ArticleController implements the CRUD actions for Article model.
@@ -26,6 +27,7 @@ class ArticleController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => Access::onlyAdmins(),
         ];
     }
 
