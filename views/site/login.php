@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
@@ -41,7 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
     <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
+        Or you can <?= Html::a('sign up', Url::to(['/site/signup'])) ?> instead.
+    </div>
+
+    <div class="col-lg-offset-1" style="color:#999;">
+        You may login with <strong>admin/admin</strong> or <strong>user1..9/user1..9</strong>.<br>
         To modify the username/password, please check out the code <code>app\models\User::$users</code>.
     </div>
 </div>

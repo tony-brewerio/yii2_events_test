@@ -29,7 +29,10 @@ class EventsBootstrap implements BootstrapInterface
     {
         Event::on(ActiveRecord::className(), ActiveRecord::EVENT_AFTER_INSERT, function ($event) {
             if ($event->sender instanceof User) {
-                Yii::$app->events->fire(new EventUserRegistered(['user' => $event->sender]));
+                Yii::$app->events->fire(new EventUserRegistered([
+                    'user' => $event->sender,
+                    'username' => $event->sender->username,
+                ]));
             }
         });
     }
