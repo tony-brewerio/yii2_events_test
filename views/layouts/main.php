@@ -37,6 +37,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'My Notifications', 'url' => ['/notification-database-targeted/index']],
+            ['label' => 'Users', 'url' => ['/user/index']],
             ['label' => 'Articles', 'url' => ['/article/index']],
             ['label' => 'Templates', 'url' => ['/notification-template/index']],
             ['label' => 'Notifications', 'url' => ['/notification-database/index']],

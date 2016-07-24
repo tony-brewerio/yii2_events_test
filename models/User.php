@@ -18,6 +18,11 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const SCENARIO_DATAGEN = 'datagen';
 
+    public static function tableName()
+    {
+        return 'user';
+    }
+
     /**
      * @inheritdoc
      */
@@ -56,8 +61,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'required'],
             [['username', 'email'], 'unique'],
             ['email', 'email'],
+            ['admin', 'boolean'],
         ];
-        $rules[] = ['admin', 'boolean', 'on' => static::SCENARIO_DATAGEN];
         $rules[] = ['password', 'safe', 'on' => static::SCENARIO_DATAGEN];
         return $rules;
     }
