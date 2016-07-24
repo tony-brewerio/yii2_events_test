@@ -10,8 +10,6 @@ use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
-use yii\helpers\StringHelper;
 
 class EventsBootstrap implements BootstrapInterface
 {
@@ -21,8 +19,12 @@ class EventsBootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $this->connectUserRegistered();
-        $this->connectArticleCreated();
+        static $already;
+        if (!$already) {
+            $this->connectUserRegistered();
+            $this->connectArticleCreated();
+            $already = true;
+        }
     }
 
     private function connectUserRegistered()
@@ -41,13 +43,7 @@ class EventsBootstrap implements BootstrapInterface
     {
         Event::on(ActiveRecord::className(), ActiveRecord::EVENT_AFTER_INSERT, function ($event) {
             if ($event->sender instanceof Article) {
-                Yii::$app->events->fire(new EventArticleCreated([
-                    'user' => $event->sender->author,
-                    'username' => $event->sender->author->username,
-                    'articleTitle' => $event->sender->title,
-                    'articleShortBody' => StringHelper::truncateWords($event->sender->body, 40),
-                    'articleMoreLink' => Html::a(Html::encode('читать далее'), ['view', 'id' => $event->sender->id]),
-                ]));
+                EventArticleCreated::fire($event->sender);
             }
         });
     }
