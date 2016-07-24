@@ -7,14 +7,18 @@ return [
     'controllerMap' => [
         'fixture' => [
             'class' => 'yii\faker\FixtureController',
-            'fixtureDataPath' => '@tests/codeception/fixtures',
-            'templatePath' => '@tests/codeception/templates',
-            'namespace' => 'tests\codeception\fixtures',
+            'fixtureDataPath' => '@tests/fixtures',
+            'templatePath' => '@tests/templates',
+            'namespace' => 'tests\unit\fixtures',
         ],
     ],
     'components' => [
         'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=yii2_basic_tests',
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=jt_yii_evt_tests',
+            'username' => 'jt_yii_evt',
+            'password' => 'jt_yii_evt',
+            'charset' => 'utf8',
         ],
         'mailer' => [
             'useFileTransport' => true,
