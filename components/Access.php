@@ -24,6 +24,19 @@ class Access
         ];
     }
 
+    public static function onlyAuthenticated()
+    {
+        return [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
+        ];
+    }
+
     public static function isAdmin()
     {
         return static::isAuthenticated() && Yii::$app->user->identity->admin;

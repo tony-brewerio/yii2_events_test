@@ -21,7 +21,7 @@ class NotificationDatabaseTargetedController extends Controller
                     'mark-as-viewed' => ['post'],
                 ],
             ],
-            'access' => Access::onlyAdmins(),
+            'access' => Access::onlyAuthenticated(),
         ];
     }
 
